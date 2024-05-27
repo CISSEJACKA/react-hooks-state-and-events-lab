@@ -1,20 +1,31 @@
-import React from "react";
-import Item from "./Item";
+// src/components/ShoppingList.js
+
+import React, { useState } from 'react';
+import Item from './Item';
 
 function ShoppingList({ items }) {
+  const [selectedCategory, setSelectedCategory] = useState('All');
+
+  const handleCategoryChange = (event) => {
+    setSelectedCategory(event.target.value);
+  };
+
+  const filteredItems = items.filter(item =>
+    selectedCategory === 'All' || item.category === selectedCategory
+  );
+
   return (
-    <div className="ShoppingList">
-      <div className="Filter">
-        <select name="filter">
-          <option value="All">Filter by category</option>
-          <option value="Produce">Produce</option>
-          <option value="Dairy">Dairy</option>
-          <option value="Dessert">Dessert</option>
-        </select>
-      </div>
+    <div>
+      <select onChange={handleCategoryChange}>
+        <option value="All">All</option>
+        <option value="Fruits">Fruits</option>
+        <option value="Vegetables">Vegetables</option>
+        <option value="Dairy">Dairy</option>
+        {/* Add more categories as needed */}
+      </select>
       <ul className="Items">
-        {items.map((item) => (
-          <Item key={item.id} name={item.name} category={item.category} />
+        {filteredItems.map(item => (
+          <Item key={item.id} name={item.name} />
         ))}
       </ul>
     </div>
@@ -22,3 +33,5 @@ function ShoppingList({ items }) {
 }
 
 export default ShoppingList;
+
+
